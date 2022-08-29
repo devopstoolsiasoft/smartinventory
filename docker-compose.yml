@@ -1,0 +1,84 @@
+version: '3'
+
+services:
+    smartinv:      
+      image: smartinventoryproductions1/smartinventory:latest
+      build:
+        context: .
+        args:
+          - "BUILD_ARGUMENT_ENV=dev"
+          - "BUILD_ARGUMENT_DEBUG_ENABLED=false"        
+      container_name: smartinv
+      expose:
+        - "80"
+        - "443"
+      ports:
+        - "9080:80"
+        - "443:443"
+      depends_on:
+        - mysql-smartinv
+      links:
+        - mysql-smartinv
+      logging:
+        driver: "json-file"
+        options:
+           max-file: "5"
+           max-size: 5m
+
+    supervisord:       
+      image: smartinventoryproductions1/smartinventory:latest
+      build:
+        context: .
+        args:
+          - "BUILD_ARGUMENT_ENV=dev"
+          - "BUILD_ARGUMENT_DEBUG_ENABLED=false"        
+      container_name: supervisord
+      user: root
+      depends_on:
+        - mysql-smartinv
+      links:
+        - mysql-smartinv
+      logging:
+        driver: "json-file"
+        options:
+           max-file: "5"
+           max-size: 5m
+      command: ["/usr/bin/supervisord"]
+
+    phpmyadmin-smartinv:
+      image: phpmyadmin/phpmyadmin
+      container_name: phpmyadmin-smartinv
+      environment:
+        PMA_HOST: mysql-smartinv
+        PMA_PORT: 3306
+      ports:
+        - '9081:80'
+      depends_on:
+        - mysql-smartinv
+      links:
+        - mysql-smartinv
+      logging:
+        driver: "json-file"
+        options:
+           max-file: "5"
+           max-size: 5m
+
+    mysql-smartinv:
+      image: mysql:5.7.29
+      container_name: mysql-smartinv
+      command: --default-authentication-plugin=mysql_native_password
+      environment:
+        - MYSQL_ROOT_PASSWORD=contrasenna
+        - MYSQL_DATABASE=colombia
+        - MYSQL_USER=colombia
+        - MYSQL_PASSWORD=colombia
+      ports:
+        - "33062:3306"
+      volumes:
+        - ./mysql-data:/var/lib/mysql
+        - ./docker/dev/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      logging:
+        driver: "json-file"
+        options:
+           max-file: "5"
+           max-size: 5m
