@@ -15,12 +15,47 @@ SmartInventory environment required to run Laravel (based on official php and my
 
 Note: OS recommendation - Linux Ubuntu based vesion 22.04.
 
+--------------
+Installation on Windows 10 operating system is recommended based on WSL2, WSL enables you to use Linux tools, like Bash or Grep, completely integrated with Windows tools, like PowerShell or Visual Studio Code, with no need to dual-boot. 
+Documentación de Instalación de [WLS](https://docs.microsoft.com/en-us/windows/wsl/install) 
+
+1. Important steps for installing Docker on Windows with WSL2 are:
+   To enable WSL2
+   ```bash
+      dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+   ```
+
+2. Activate the virtualization features.
+   ```bash
+      dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+   ```
+
+3. Set WSL 2 by default
+   ```bash
+      wsl --set-default-version 2
+   ```
+     
+4. To set Ubuntu as the default distribution in docker desktop
+   ```bash
+      wsl --set-default ubuntu-22.04
+   ```
+
+   --------------
+   To consider.
+
+   When handling docker desktop it is better to let it handle the location of the containers to avoid errors when loading them.
+
+   Container location in WSL: \\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes
+
+--------------
+
 ## Components:
 1. Apache 7.2.24
 2. PHP 7.2.24 (cli) (Apache handler)
 3. MySQL 5.7.29
 4. Laravel Framework 5.8.33
 
+--------------
 ## Setting up DEV environment
 1.Clone this repository from GitHub.
 ```bash
