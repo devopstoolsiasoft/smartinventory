@@ -5,8 +5,8 @@ SmartInventory predicts sales and supplier response times, responses to customer
 # SmartInventory environment
 SmartInventory environment required to run Laravel (based on official php and mysql docker hub repositories).
 
-[Source code]([https://github.com/devopstoolsiasoft/smartinv])
-[Imagen Docker]([https://hub.docker.com/repository/docker/smartinventoryproductions1/smartinventory])
+[Source code](https://github.com/devopstoolsiasoft/smartinv)
+[Imagen Docker](https://hub.docker.com/repository/docker/smartinventoryproductions1/smartinventory)
 
 ## Requirements
 * Docker version Version: 20.10.17 or later
@@ -24,36 +24,29 @@ Note: OS recommendation - Linux Ubuntu based vesion 22.04.
 ## Setting up DEV environment
 1.Clone this repository from GitHub.
 ```bash
-git clone https://github.com/devopstoolsiasoft/smartinv.git
-Cloning into 'smartinv'...
-Username for 'https://github.com': devopstoolsiasoft
-Password for 'https://devopstoolsiasoft@github.com': 
+git clone https://github.com/devopstoolsiasoft/smartinventory.git
+Cloning into 'smartinventory'...
+remote: Enumerating objects: 
 ```
-- Accessing the repository and unzipping the persistent folder of the database used in the docker-compose file
-```bash
-cd smartinv/
-sudo tar -zxvf storage.tar.gz
-```
+
 2. Download image docker Docker Hub 
 - have previously installed docker and docker-compose and login in docker hub
  ```bash
- cd smartinv/
+ cd smartinventory/
  docker login
- docker pull devopstoolsiasoft/smartinv:latest
+ docker pull smartinventoryproductions1/smartinventory:latest
  ```
+ The username and password for the Docker image download is provided by the provider.
+ 
 - List the docker images
  ```bash 
  docker@docker:~/smartinv$ docker images
  REPOSITORY                   TAG                 IMAGE ID            CREATED             SIZE
- devopstoolsiasoft/smartinv   latest              c220712e7e8d        35 minutes ago      1.36GB
- composer                     latest              e3c905742d7c        3 weeks ago         179MB
- phpmyadmin/phpmyadmin        latest              366fde4f732e        3 weeks ago         468MB
- mysql                        5.7.29              84164b03fa2e        6 weeks ago         456MB
- php                          7.2.24-apache       071b437a2194        5 months ago        410MB
+ smartinventoryproductions1/smartinventory   latest    7c20ec4f134b   4 hours ago    2.2GB
  ```
 3. Create docker services with docker-compose file
  ```bash
- docker@docker:~/smartinv$ docker-compose up -d
+ docker@docker:~/smartinv$ docker compose up -d
  Creating network "smartinv_default" with the default driver
  Creating mysql ... done
  Creating supervisord           ... done
@@ -62,7 +55,7 @@ sudo tar -zxvf storage.tar.gz
  ```
 - Check containers, services and ports that are running
  ```bash
- docker@docker:~/smartinv$ docker-compose ps -a
+ docker@docker:~/smartinv$ docker compose ps -a
         Name                       Command               State                     Ports                   
  -----------------------------------------------------------------------------------------------------------
  mysql                   docker-entrypoint.sh --def ...   Up      0.0.0.0:33061->3306/tcp, 33060/tcp        
@@ -72,15 +65,37 @@ sudo tar -zxvf storage.tar.gz
  ```
  ```bash
  docker30@docker30:~/development_docker_test/test-clone-git-docker/smartinv$ docker ps -a
- CONTAINER ID        IMAGE                               COMMAND                  CREATED             STATUS              PORTS                                        NAMES
- 58095463ddd0        phpmyadmin/phpmyadmin               "/docker-entrypoint.…"   51 seconds ago      Up 48 seconds       0.0.0.0:8081->80/tcp                         smartinv_phpmyadmin_1
- a6a13527fb1a        devopstoolsiasoft/smartinv:latest   "docker-php-entrypoi…"   51 seconds ago      Up 49 seconds       0.0.0.0:443->443/tcp, 0.0.0.0:8080->80/tcp   smartinv
- c8ed27eb0c50        devopstoolsiasoft/smartinv:latest   "docker-php-entrypoi…"   51 seconds ago      Up 48 seconds       80/tcp                                       supervisord
- 2d2d6713ed74        mysql:5.7.29                        "docker-entrypoint.s…"   52 seconds ago      Up 51 seconds       33060/tcp, 0.0.0.0:33061->3306/tcp           mysql
+  NAME                  COMMAND                  SERVICE               STATUS              PORTS
+mysql-smartinv        "docker-entrypoint.s…"   mysql-smartinv        running             33060/tcp, 0.0.0.0:33062->3306/tcp, :::33062->3306/tcp
+phpmyadmin-smartinv   "/docker-entrypoint.…"   phpmyadmin-smartinv   running             0.0.0.0:9081->80/tcp, :::9081->80/tcp
+smartinv              "docker-php-entrypoi…"   smartinv              running             0.0.0.0:443->443/tcp, :::443->443/tcp, 0.0.0.0:9080->80/tcp, :::9080->80/tcp
+supervisord           "docker-php-entrypoi…"   supervisord           running             80/tcp
+
   ```
 4. Verify web applications
-- verify web applications on port 8080 smartinv in http://IP_HOST:8080/
-- verify web applications phpmyadmin on port 8081 in http://IP_HOST:8081/
+- verify web applications on port 8080 smartinv in http://IP_HOST:9080/
+- verify web applications phpmyadmin on port 8081 in http://IP_HOST:9081/
+
+Por ejemplo: http://localhost:9080 o visitar el demo en: http://smartinv.tepuyrd.com/
+
+<p align="center">
+  <img src="images/smartinv_inicio.png"/>
+</p>
+
+Usario por defecto:<br>
+email:    demo@demo.com <br>
+password: demo@demo.com <br>
+
+<p align="center">
+  <img src="images/smartinv_consulta_1.png"/>
+</p>
+
+<p align="center">
+  <img src="images/smartinv_consulta_2.png"/>
+</p>
+
+
+
 
 5. Build and start the image from your terminal
  ```bash
